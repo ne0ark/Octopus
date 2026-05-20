@@ -3,7 +3,7 @@
 ARG OCTOPUS_REPO=https://github.com/octopusreview/octopus.git
 ARG OCTOPUS_REF=master
 
-FROM alpine/git:latest AS source
+FROM alpine/git:latest@sha256:d453f54c83320412aa89c391b076930bd8569bc1012285e8c68ce2d4435826a3 AS source
 ARG OCTOPUS_REPO
 ARG OCTOPUS_REF
 WORKDIR /src
@@ -13,7 +13,7 @@ RUN git clone --depth 1 --branch "${OCTOPUS_REF}" "${OCTOPUS_REPO}" octopus || \
     git fetch --depth 1 origin "${OCTOPUS_REF}" && \
     git checkout FETCH_HEAD)
 
-FROM oven/bun:1-alpine AS base
+FROM oven/bun:1-alpine@sha256:5acc90a93e91ff07bf72aa90a7c9f0fa189765aec90b47bdbf2152d2196383c0 AS base
 
 FROM base AS deps
 WORKDIR /app
@@ -49,7 +49,7 @@ ENV NEXT_PUBLIC_PUBBY_KEY=${NEXT_PUBLIC_PUBBY_KEY}
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN cd apps/web && bun run build
 
-FROM node:22-alpine AS runner
+FROM node:22-alpine@sha256:968df39aedcea65eeb078fb336ed7191baf48f972b4479711397108be0966920 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN apk add --no-cache git && \
