@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>octopus-postgres</Name>
+  <Repository>postgres:17-alpine</Repository>
+  <Registry>https://hub.docker.com/_/postgres</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ne0ark/Octopus/issues</Support>
+  <Project>https://www.postgresql.org/</Project>
+  <Overview>PostgreSQL database container for self-hosted Octopus.</Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI/>
+  <TemplateURL>https://raw.githubusercontent.com/ne0ark/Octopus/main/octopus-postgres.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/docker-library/docs/master/postgres/logo.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Companion database for Octopus. Change POSTGRES_PASSWORD before production use and update DATABASE_URL in the Octopus template to match.</Requires>
+  <Config Name="Database Port" Target="5432" Default="43332" Mode="tcp" Description="Host port for PostgreSQL. The Octopus template defaults to host.docker.internal:43332." Type="Port" Display="always" Required="false" Mask="false">43332</Config>
+  <Config Name="PostgreSQL Data" Target="/var/lib/postgresql/data" Default="/mnt/user/appdata/octopus/postgres" Mode="rw" Description="Persistent PostgreSQL data directory." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/octopus/postgres</Config>
+  <Config Name="POSTGRES_DB" Target="POSTGRES_DB" Default="octopus" Mode="" Description="Database name." Type="Variable" Display="always" Required="true" Mask="false">octopus</Config>
+  <Config Name="POSTGRES_USER" Target="POSTGRES_USER" Default="octopus" Mode="" Description="Database user." Type="Variable" Display="always" Required="true" Mask="false">octopus</Config>
+  <Config Name="POSTGRES_PASSWORD" Target="POSTGRES_PASSWORD" Default="octopus" Mode="" Description="Database password. Change for production and update the Octopus DATABASE_URL." Type="Variable" Display="always" Required="true" Mask="true">octopus</Config>
+</Container>

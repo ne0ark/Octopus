@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Octopus</Name>
+  <Repository>ghcr.io/ne0ark/octopus:latest</Repository>
+  <Registry>https://ghcr.io/ne0ark/octopus</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ne0ark/Octopus/issues</Support>
+  <Project>https://octopus-review.ai/docs/self-hosting</Project>
+  <Overview>Octopus is a self-hosted AI-powered pull request review tool. This template deploys the web application and expects PostgreSQL 15+ and Qdrant to be available. Use the companion Octopus PostgreSQL and Octopus Qdrant templates, then run database migrations after first start.</Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:3000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/ne0ark/Octopus/main/octopus.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/octopusreview/octopus/master/apps/web/public/octopus-logo.png</Icon>
+  <ExtraParams>--add-host=host.docker.internal:host-gateway</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Requires PostgreSQL 15+ and Qdrant. Defaults connect to the companion templates through host.docker.internal using ports 43332 and 43333. For production, prefer a user-defined Docker network and change DATABASE_URL/QDRANT_URL to the dependency container names. After first start, run migrations from the Octopus source checkout or container using: npx prisma migrate deploy.</Requires>
+  <Config Name="WebUI" Target="3000" Default="43300" Mode="tcp" Description="Octopus web interface port." Type="Port" Display="always" Required="true" Mask="false">43300</Config>
+  <Config Name="DATABASE_URL" Target="DATABASE_URL" Default="postgresql://octopus:octopus@host.docker.internal:43332/octopus" Mode="" Description="PostgreSQL connection string. Change the password if you change POSTGRES_PASSWORD in the companion database template." Type="Variable" Display="always" Required="true" Mask="true">postgresql://octopus:octopus@host.docker.internal:43332/octopus</Config>
+  <Config Name="QDRANT_URL" Target="QDRANT_URL" Default="http://host.docker.internal:43333" Mode="" Description="Qdrant HTTP endpoint." Type="Variable" Display="always" Required="true" Mask="false">http://host.docker.internal:43333</Config>
+  <Config Name="QDRANT_API_KEY" Target="QDRANT_API_KEY" Default="" Mode="" Description="Optional Qdrant API key if Qdrant authentication is enabled." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="BETTER_AUTH_SECRET" Target="BETTER_AUTH_SECRET" Default="" Mode="" Description="Required 64-character random secret. Generate with: openssl rand -hex 32" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="BETTER_AUTH_URL" Target="BETTER_AUTH_URL" Default="http://localhost:43300" Mode="" Description="Public base URL for Octopus. Use your Unraid host URL or reverse-proxy HTTPS URL for OAuth and webhooks." Type="Variable" Display="always" Required="true" Mask="false">http://localhost:43300</Config>
+  <Config Name="NEXT_PUBLIC_APP_URL" Target="NEXT_PUBLIC_APP_URL" Default="http://localhost:43300" Mode="" Description="Public app URL exposed to the frontend. Usually the same value as BETTER_AUTH_URL." Type="Variable" Display="always" Required="true" Mask="false">http://localhost:43300</Config>
+  <Config Name="ENABLE_REVIEW_WORKERS" Target="ENABLE_REVIEW_WORKERS" Default="true" Mode="" Description="Set true for a single-container Unraid install so Octopus consumes review jobs." Type="Variable" Display="always" Required="true" Mask="false">true</Config>
+  <Config Name="OPENAI_API_KEY" Target="OPENAI_API_KEY" Default="" Mode="" Description="Required for code embeddings and OpenAI review models." Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="ANTHROPIC_API_KEY" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="Anthropic Claude API key for review models." Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="GITHUB_APP_ID" Target="GITHUB_APP_ID" Default="" Mode="" Description="GitHub App ID." Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="GITHUB_APP_PRIVATE_KEY" Target="GITHUB_APP_PRIVATE_KEY" Default="" Mode="" Description="GitHub App private key PEM. If multiline values are not preserved, paste with escaped newline characters." Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="GITHUB_WEBHOOK_SECRET" Target="GITHUB_WEBHOOK_SECRET" Default="" Mode="" Description="GitHub App webhook secret." Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="GITHUB_CLIENT_ID" Target="GITHUB_CLIENT_ID" Default="" Mode="" Description="GitHub OAuth client ID for the GitHub App." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="GITHUB_CLIENT_SECRET" Target="GITHUB_CLIENT_SECRET" Default="" Mode="" Description="GitHub OAuth client secret for the GitHub App." Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="NEXT_PUBLIC_GITHUB_APP_SLUG" Target="NEXT_PUBLIC_GITHUB_APP_SLUG" Default="" Mode="" Description="GitHub App slug, for example my-octopus-review-app." Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="GITHUB_STATE_SECRET" Target="GITHUB_STATE_SECRET" Default="" Mode="" Description="Random secret for GitHub OAuth state validation. Generate with: openssl rand -hex 32" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="ADMIN_EMAILS" Target="ADMIN_EMAILS" Default="" Mode="" Description="Comma-separated admin email allowlist." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="COHERE_API_KEY" Target="COHERE_API_KEY" Default="" Mode="" Description="Optional Cohere API key for reranking search results." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="RESEND_API_KEY" Target="RESEND_API_KEY" Default="" Mode="" Description="Optional Resend API key for transactional email." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+</Container>

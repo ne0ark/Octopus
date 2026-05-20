@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>octopus-qdrant</Name>
+  <Repository>qdrant/qdrant:v1.17.0</Repository>
+  <Registry>https://hub.docker.com/r/qdrant/qdrant</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ne0ark/Octopus/issues</Support>
+  <Project>https://qdrant.tech/</Project>
+  <Overview>Qdrant vector database container for self-hosted Octopus code embeddings and search.</Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:6333]/dashboard</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/ne0ark/Octopus/main/octopus-qdrant.xml</TemplateURL>
+  <Icon>https://qdrant.tech/img/brand-resources-logos/qdrant-logo.svg</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Companion vector database for Octopus. Avoid exposing Qdrant directly to the internet. If you enable QDRANT__SERVICE__API_KEY, set the same value as QDRANT_API_KEY in the Octopus template.</Requires>
+  <Config Name="Qdrant HTTP Port" Target="6333" Default="43333" Mode="tcp" Description="Qdrant HTTP API port. The Octopus template defaults to host.docker.internal:43333." Type="Port" Display="always" Required="true" Mask="false">43333</Config>
+  <Config Name="Qdrant gRPC Port" Target="6334" Default="43334" Mode="tcp" Description="Optional Qdrant gRPC port." Type="Port" Display="advanced" Required="false" Mask="false">43334</Config>
+  <Config Name="Qdrant Data" Target="/qdrant/storage" Default="/mnt/user/appdata/octopus/qdrant" Mode="rw" Description="Persistent Qdrant storage directory." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/octopus/qdrant</Config>
+  <Config Name="QDRANT__SERVICE__API_KEY" Target="QDRANT__SERVICE__API_KEY" Default="" Mode="" Description="Optional Qdrant API key. If set, configure QDRANT_API_KEY in Octopus to the same value." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+</Container>
