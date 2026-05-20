@@ -20,10 +20,10 @@
   <DateInstalled/>
   <DonateText/>
   <DonateLink/>
-  <Requires>Companion database for Octopus. Change POSTGRES_PASSWORD before production use and update DATABASE_URL in the Octopus template to match.</Requires>
+  <Requires>Companion database for Octopus. Set POSTGRES_PASSWORD before first start and update DATABASE_URL in the Octopus template to match.</Requires>
   <Config Name="Database Port" Target="5432" Default="43332" Mode="tcp" Description="Host port for PostgreSQL. The Octopus template defaults to host.docker.internal:43332." Type="Port" Display="always" Required="false" Mask="false">43332</Config>
   <Config Name="PostgreSQL Data" Target="/var/lib/postgresql/data" Default="/mnt/user/appdata/octopus/postgres" Mode="rw" Description="Persistent PostgreSQL data directory." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/octopus/postgres</Config>
   <Config Name="POSTGRES_DB" Target="POSTGRES_DB" Default="octopus" Mode="" Description="Database name." Type="Variable" Display="always" Required="true" Mask="false">octopus</Config>
   <Config Name="POSTGRES_USER" Target="POSTGRES_USER" Default="octopus" Mode="" Description="Database user." Type="Variable" Display="always" Required="true" Mask="false">octopus</Config>
-  <Config Name="POSTGRES_PASSWORD" Target="POSTGRES_PASSWORD" Default="octopus" Mode="" Description="Database password. Change for production and update the Octopus DATABASE_URL." Type="Variable" Display="always" Required="true" Mask="true">octopus</Config>
+  <Config Name="POSTGRES_PASSWORD" Target="POSTGRES_PASSWORD" Default="" Mode="" Description="Database password. Required. Update the Octopus DATABASE_URL to match." Type="Variable" Display="always" Required="true" Mask="true"></Config>
 </Container>
