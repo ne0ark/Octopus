@@ -1,0 +1,67 @@
+name: Build and Publish Octopus Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      octopus_ref:
+        description: Upstream octopusreview/octopus branch, tag, or commit to build
+        required: false
+        default: master
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - .github/workflows/docker.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - .github/workflows/docker.yml
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE_NAME: ghcr.io/ne0ark/octopus
+  OCTOPUS_REF: ${{ github.event.inputs.octopus_ref || vars.OCTOPUS_REF || 'master' }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:main
+            ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          build-args: |
+            OCTOPUS_REF=${{ env.OCTOPUS_REF }}
+            NEXT_PUBLIC_BUILD_ID=${{ github.sha }}
+            NEXT_PUBLIC_GITHUB_APP_SLUG=${{ vars.NEXT_PUBLIC_GITHUB_APP_SLUG }}
+            NEXT_PUBLIC_PUBBY_KEY=${{ vars.NEXT_PUBLIC_PUBBY_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
