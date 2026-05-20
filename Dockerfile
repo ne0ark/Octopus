@@ -52,14 +52,19 @@ RUN cd apps/web && bun run build
 FROM node:22-alpine@sha256:968df39aedcea65eeb078fb336ed7191baf48f972b4479711397108be0966920 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN apk add --no-cache git && \
+RUN apk add --no-cache git libstdc++ && \
     addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
+COPY --from=base /usr/local/bin/bun /usr/local/bin/bun
+RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/CHANGELOG.md ./CHANGELOG.md
+COPY --from=builder --chown=nextjs:nodejs /app/package.json /app/bun.lock ./
+COPY --from=builder --chown=nextjs:nodejs /app/packages/db ./packages/db
+COPY --from=builder --chown=nextjs:nodejs /app/tools/tsconfig ./tools/tsconfig
 
 USER nextjs
 EXPOSE 3000
